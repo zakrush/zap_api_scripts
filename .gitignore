@@ -1,0 +1,6 @@
+/.idea/*
+/reports/*
+/scripts/scan_core/setup/api_conf.py
+__pycache__/
+*.py[cod]
+.gitlab-ci.yml

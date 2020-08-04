@@ -1,0 +1,19 @@
+stages:
+  - Build
+
+variables:
+  REGISTRY: docker-registry.example.com
+  USERNAME: $REGISTRY_USERNAME
+  PASSWORD: $REGISTRY_PASSWORD
+
+docker:
+  stage: Build
+  image: docker:stable
+  variables:
+    NAME: zap-scripts
+  script:
+    - docker build -t $REGISTRY/$NAME:latest .
+    - docker login $REGISTRY -u $USERNAME -p $PASSWORD
+    - docker push $REGISTRY/$NAME:latest
+  tags:
+    - docker-host

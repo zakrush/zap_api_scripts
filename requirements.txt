@@ -1,0 +1,5 @@
+python-owasp-zap-v2.4
+python-redmine
+colorama
+requests
+DateTime

@@ -1,31 +1,42 @@
 # PYTHON
 
-Для автоматизации тестирования пишутся скрипты на python обращения к API.
+Here is python scripts for ZAP API and scripts for posting results to
+SLACK, redmine and defectDojo
 
-Используемая версия: `python > 3.8`
+Version of python: `python > 3.8`
 
-**ВНИМАНИЕ!:** если zap поднимается на удаленном сервере, то чтобы достучаться до API
-необходимо к API обращаться через **hostname zap**. Обращение по ip адресу не работает,
-Поэтому на хосте с которого будут работать python скрипты **необходимо** прописать в `/etc/hosts` запись о хосте `zap` на котором работает API.
+**WARNING!:** If you can't connect to zap API, you should setup  **hostname zap** in your instance.
+On the host with python scripts  you **should** edit `/etc/hosts` with `zap` line and IP API ZAP. If scripts working into Docker you can edit `/etc/hosts` by `--add-host` parameter into `docker run` command.
 
-## Зависимости
+## Dependences
 
-Используются следующие библиотеки:
-* `time`
-* `datetime`
-* `pprint`
-* `zapv2`
-
-Установка возможна через команду:
+Please if you run it into host, install dependeces:
     `pip3 install -r requirements.txt`
 
-## Скрипты и назначения
+## Scripts
+`zap_regression_scan.py` uses for scanning after regression qa tests.
+`api_scan.py` uses for scanning with open api url
 
-`zap_regression_api_script.py`
+##### Running
+Edit:
+```
+/scripts/configs/reports_config.py
+/scripts/configs/config_regression.py
+/scripts/scan_core/api_conf.py
+```
+For run into Docker please use:
+```
+git clone
+docker build -t zap-scripts .
+docker run --rm zap-scripts
+```
+For run into host:
+`python regression_scan.py`
 
-Используется для автоматизации тестирования после сканирования через регрессию.
-
-##### Особенности скрипта zap_regression:
-
-* создает новый контекст по маске `.*timebook.ru/.*`
-* не использует пауков тестирует только по ссылкам регрессии.
+### Usage
+regression_scan.py have an arguments. Please get help it by:
+`python regression_scan.py --help`
+If you usage the docker, you can edit entrypoint in `Dockerfile` for change parameters of regular scans. After it you should build docker image again.
+You can usage `--entrypoint`  parameter into `docker run` command.
+For example:
+`docker run --rm --entrypoint /usr/local/bin/python3 zap-scripts regression_scan.py --help`
